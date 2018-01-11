@@ -9,21 +9,38 @@
 
 int numberofencoders = 0;
 
+double gettimesec()
+{
+	double value;
+	double value2;
+	struct timespec cur_time;
+	clock_gettime(CLOCK_MONOTONIC, &cur_time);
+	value = cur_time.tv_sec;
+	value2 = ((double)cur_time.tv_nsec) / 1000000000;
+	return value + value2;
+}
+
 void updateEncoders()
 {
 	struct encoder *encoder = encoders;
+	double cur_time = gettimesec();
+
 	for (; encoder < encoders + numberofencoders; encoder++)
 	{
-		int MSB = opiz_gpio_input(encoder->pin_a);
-		int LSB = opiz_gpio_input(encoder->pin_b);		
+		if (cur_time - encoder->previous_time > 0.001)
+		{
+			int MSB = opiz_gpio_input(encoder->pin_a);
+			int LSB = opiz_gpio_input(encoder->pin_b);
 
-		int encoded = (MSB << 1) | LSB;
-		int sum = (encoder->lastEncoded << 2) | encoded;
+			int encoded = (MSB << 1) | LSB;
+			int sum = (encoder->lastEncoded << 2) | encoded;
 
-		if (sum == 0b1101 || sum == 0b0100 || sum == 0b0010 || sum == 0b1011) encoder->value++;
-		if (sum == 0b1110 || sum == 0b0111 || sum == 0b0001 || sum == 0b1000) encoder->value--;
+			if (sum == 0b1101 || sum == 0b0100 || sum == 0b0010 || sum == 0b1011) encoder->value++;
+			if (sum == 0b1110 || sum == 0b0111 || sum == 0b0001 || sum == 0b1000) encoder->value--;
 
-		encoder->lastEncoded = encoded;
+			encoder->lastEncoded = encoded;
+			encoder->previous_time = cur_time;
+		}
 	}
 }
 
@@ -40,6 +57,8 @@ struct encoder *setupencoder(unsigned int pin_a, unsigned int pin_b)
 	newencoder->pin_b = pin_b;
 	newencoder->value = 0;
 	newencoder->lastEncoded = 0;
+	
+	newencoder->previous_time = gettimesec();
 
 	opiz_gpio_set_cfgpin(pin_a, OPIZ_GPIO_INPUT);
 	opiz_gpio_set_cfgpin(pin_b, OPIZ_GPIO_INPUT);

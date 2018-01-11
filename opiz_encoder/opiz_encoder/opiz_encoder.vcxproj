@@ -60,6 +60,30 @@
   <ImportGroup Label="Shared" />
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <RemoteCCompileToolExe>gcc</RemoteCCompileToolExe>
+    <RemoteLdToolExe>gcc</RemoteLdToolExe>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <RemoteCCompileToolExe>gcc</RemoteCCompileToolExe>
+    <RemoteLdToolExe>gcc</RemoteLdToolExe>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <RemoteCCompileToolExe>gcc</RemoteCCompileToolExe>
+    <RemoteLdToolExe>gcc</RemoteLdToolExe>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <RemoteCCompileToolExe>gcc</RemoteCCompileToolExe>
+    <RemoteLdToolExe>gcc</RemoteLdToolExe>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <RemoteCCompileToolExe>gcc</RemoteCCompileToolExe>
+    <RemoteLdToolExe>gcc</RemoteLdToolExe>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <RemoteCCompileToolExe>gcc</RemoteCCompileToolExe>
+    <RemoteLdToolExe>gcc</RemoteLdToolExe>
+  </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="main.c" />
     <ClCompile Include="opiz_gpio.c" />
@@ -72,23 +96,83 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <ClCompile />
     <Link />
+    <ClCompile>
+      <CLanguageStandard>gnu99</CLanguageStandard>
+      <AdditionalOptions>-pthread %(AdditionalOptions)</AdditionalOptions>
+      <PositionIndependentCode>true</PositionIndependentCode>
+    </ClCompile>
+    <Link>
+      <AdditionalOptions>-pthread </AdditionalOptions>
+      <ShowProgress>true</ShowProgress>
+      <VerboseOutput>true</VerboseOutput>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile />
     <Link />
+    <ClCompile>
+      <CLanguageStandard>gnu99</CLanguageStandard>
+      <AdditionalOptions>-pthread %(AdditionalOptions)</AdditionalOptions>
+      <PositionIndependentCode>true</PositionIndependentCode>
+    </ClCompile>
+    <Link>
+      <AdditionalOptions>-pthread </AdditionalOptions>
+      <ShowProgress>true</ShowProgress>
+      <VerboseOutput>true</VerboseOutput>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <ClCompile />
     <Link />
+    <ClCompile>
+      <CLanguageStandard>gnu99</CLanguageStandard>
+      <AdditionalOptions>-pthread %(AdditionalOptions)</AdditionalOptions>
+      <PositionIndependentCode>true</PositionIndependentCode>
+    </ClCompile>
+    <Link>
+      <AdditionalOptions>-pthread </AdditionalOptions>
+      <ShowProgress>true</ShowProgress>
+      <VerboseOutput>true</VerboseOutput>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <Link />
+    <ClCompile>
+      <CLanguageStandard>gnu99</CLanguageStandard>
+      <AdditionalOptions>-pthread %(AdditionalOptions)</AdditionalOptions>
+      <PositionIndependentCode>true</PositionIndependentCode>
+    </ClCompile>
+    <Link>
+      <AdditionalOptions>-pthread </AdditionalOptions>
+      <ShowProgress>true</ShowProgress>
+      <VerboseOutput>true</VerboseOutput>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Link />
+    <ClCompile>
+      <CLanguageStandard>gnu99</CLanguageStandard>
+      <AdditionalOptions>-pthread %(AdditionalOptions)</AdditionalOptions>
+      <PositionIndependentCode>true</PositionIndependentCode>
+    </ClCompile>
+    <Link>
+      <AdditionalOptions>-pthread </AdditionalOptions>
+      <ShowProgress>true</ShowProgress>
+      <VerboseOutput>true</VerboseOutput>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
     <Link />
+    <ClCompile>
+      <CLanguageStandard>gnu99</CLanguageStandard>
+      <AdditionalOptions>-pthread %(AdditionalOptions)</AdditionalOptions>
+      <PositionIndependentCode>true</PositionIndependentCode>
+    </ClCompile>
+    <Link>
+      <AdditionalOptions>-pthread </AdditionalOptions>
+      <ShowProgress>true</ShowProgress>
+      <VerboseOutput>true</VerboseOutput>
+    </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

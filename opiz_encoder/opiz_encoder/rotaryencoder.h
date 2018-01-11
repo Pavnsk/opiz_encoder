@@ -1,4 +1,5 @@
-#define max_encoders 3
+#include <time.h>
+#define max_encoders 4
 
 struct encoder
 {
@@ -6,6 +7,7 @@ struct encoder
 	unsigned int pin_b;
 	volatile long value;
 	volatile int lastEncoded;
+	double  previous_time;
 };
 
 struct encoder encoders[max_encoders];
