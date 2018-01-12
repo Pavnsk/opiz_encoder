@@ -5,32 +5,13 @@
 #include "opiz_gpio.h"
 #include "stdio.h"
 #include "rotaryencoder.h"
-
+#include "main.h"
 
 #define MIN(X, Y) (((X) < (Y)) ? (X) : (Y))
-/*
-int main()
-{
-	opiz_gpio_init();
-	
-	struct encoder *encoder = setupencoder(OPIZ_GPA(0), OPIZ_GPA(10));
-	long value;
-	while (1)
-	{
-		updateEncoders();
-		long l = (encoder->value)/4;
-		if (l != value)
-		{
-			printf("value: %d\n", (void *)l);
-			value = l;
-		}
-	}
-	return(0);
-}*/
 
 static long valueA = 0;
 
-void *thread_proc(void *tid)
+void *encoder_thread_proc(void *tid)
 {
 	struct encoder *encoder = setupencoder(OPIZ_GPA(0), OPIZ_GPA(10));
 	long value;
@@ -50,24 +31,19 @@ void *thread_proc(void *tid)
 
 int main()
 {
+	opiz_gpio_init();
+	create_encoder_thread();
+	run_tcp_server();
+	return 0;
+}
+
+void run_tcp_server()
+{
 	int sock, listener;
 	struct sockaddr_in addr;
 	char buf[1024];
 	int bytes_read;
-
-	pthread_t thread;
-
-	opiz_gpio_init();
-
-	int status = pthread_create(&thread, NULL, thread_proc, NULL);
-
-	if (status != 0)
-	{
-		printf("Error %d\n", status);
-		exit(-1);
-	}
-	
-
+		
 	listener = socket(AF_INET, SOCK_STREAM, 0);
 	if (listener < 0)
 	{
@@ -102,12 +78,21 @@ int main()
 			//if (strncmp(buf, "GETSTATE", MIN(bytes_read, 8) == 0))
 			{
 				snprintf(buf, 1024, "%d\0", valueA);
-				send(sock, buf, strlen(buf)+1, 0);
+				send(sock, buf, strlen(buf) + 1, 0);
 			}
 		}
 
 		close(sock);
 	}
+}
 
-	return 0;
+void create_encoder_thread()
+{
+	pthread_t encoder_thread;
+	int status = pthread_create(&encoder_thread, NULL, encoder_thread_proc, NULL);
+	if (status != 0)
+	{
+		printf("Error %d\n", status);
+		exit(-1);
+	}
 }

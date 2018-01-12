@@ -90,6 +90,7 @@
     <ClCompile Include="rotaryencoder.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="main.h" />
     <ClInclude Include="opiz_gpio.h" />
     <ClInclude Include="rotaryencoder.h" />
   </ItemGroup>
