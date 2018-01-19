@@ -7,6 +7,12 @@
 #include "rotaryencoder.h"
 #include "main.h"
 
+#if __STDC_NO_ATOMICS__ != 1
+#include <stdatomic.h>
+#endif
+
+
+
 #define MIN(X, Y) (((X) < (Y)) ? (X) : (Y))
 
 static long valueA = 0;
@@ -31,6 +37,8 @@ void *encoder_thread_proc(void *tid)
 
 int main()
 {
+	printf("ATOMIC_INT_LOCK_FREE:%d\n", ATOMIC_INT_LOCK_FREE);
+	printf("sizeof(long):%d\n", sizeof(long));
 	opiz_gpio_init();
 	create_encoder_thread();
 	run_tcp_server();

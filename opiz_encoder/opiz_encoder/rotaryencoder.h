@@ -1,4 +1,3 @@
-#include <time.h>
 #define max_encoders 4
 
 struct encoder

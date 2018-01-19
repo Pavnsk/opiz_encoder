@@ -1,23 +1,19 @@
 
-//#include <wiringPi.h>
-#include "opiz_gpio.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <time.h>
 
+#include "opiz_gpio.h"
 #include "rotaryencoder.h"
 
 int numberofencoders = 0;
 
 double gettimesec()
-{
-	double value;
-	double value2;
+{	
 	struct timespec cur_time;
 	clock_gettime(CLOCK_MONOTONIC, &cur_time);
-	value = cur_time.tv_sec;
-	value2 = ((double)cur_time.tv_nsec) / 1000000000;
-	return value + value2;
+	return 1E-9 * cur_time.tv_nsec + cur_time.tv_sec;
 }
 
 void updateEncoders()
@@ -37,6 +33,9 @@ void updateEncoders()
 
 			if (sum == 0b1101 || sum == 0b0100 || sum == 0b0010 || sum == 0b1011) encoder->value++;
 			if (sum == 0b1110 || sum == 0b0111 || sum == 0b0001 || sum == 0b1000) encoder->value--;
+
+			if (encoder->value < 0) encoder->value = 0;
+			if (encoder->value > 800) encoder->value = 800;
 
 			encoder->lastEncoded = encoded;
 			encoder->previous_time = cur_time;
